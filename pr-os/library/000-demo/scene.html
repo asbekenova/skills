@@ -1,0 +1,54 @@
+<!doctype html>
+<!-- Шаблон сцены PR_OS. Скопируйте в pr-os/library/<дата>-<название>/scene.html и меняйте только render(t).
+     Пути /kit/... работают, потому что render.mjs раздаёт папку pr-os как корень сайта. -->
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/kit/brand.css">
+<style>
+  .card { position: absolute; padding: 40px 48px; border-radius: 6px; }
+  .num { font-size: 240px; color: var(--amber); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="title" class="h1" style="position:absolute; left:90px; top:300px; width:760px; font-size:96px">
+    Цена одной детали
+  </div>
+  <div id="card" class="card paper" style="left:90px; top:760px; width:620px">
+    <div class="num h1" id="num">0</div>
+    <div class="small" style="font-size:44px">млн сум за один разъём</div>
+  </div>
+  <div id="note" class="accent-script" style="position:absolute; left:110px; top:1250px; font-size:84px">
+    и это не всё
+  </div>
+</div>
+<script type="module">
+  import { prog, lerp, easeOut, backOut } from '/kit/ease.js';
+
+  // Длительность ролика в секундах. render.mjs читает её отсюда.
+  window.DURATION = 4;
+
+  const $ = (id) => document.getElementById(id);
+  if (new URLSearchParams(location.search).get('guides')) $('stage').classList.add('guides');
+
+  // Главное правило: внешний вид кадра зависит только от t. Никаких setTimeout и requestAnimationFrame.
+  window.render = (t) => {
+    const pTitle = easeOut(prog(t, 0, 0.5));
+    $('title').style.opacity = pTitle;
+    $('title').style.transform = `translateY(${lerp(40, 0, pTitle)}px)`;
+
+    const pCard = prog(t, 0.6, 0.45);
+    $('card').style.opacity = pCard > 0 ? 1 : 0;
+    $('card').style.transform = `scale(${lerp(0.6, 1, backOut(pCard))}) rotate(${lerp(-8, -2, pCard)}deg)`;
+
+    $('num').textContent = lerp(0, 2.8, easeOut(prog(t, 1.0, 1.2))).toFixed(1).replace('.', ',');
+
+    const pNote = easeOut(prog(t, 2.6, 0.4));
+    $('note').style.opacity = pNote;
+    $('note').style.transform = `rotate(${lerp(6, -3, pNote)}deg)`;
+  };
+  window.SCENE_READY = document.fonts.ready.then(() => true);
+</script>
+</body>
+</html>
