@@ -25,6 +25,10 @@ NODE_USE_ENV_PROXY=1 DISABLE_TELEMETRY=1 npx -y skills@1.9.0 find "<запрос
 - визуальный радар: `remotion`, `motion graphics`, `kinetic typography`, `video editing`, `ffmpeg`, `captions subtitles`, `stop motion`, `collage`, `instagram carousel`, `reels`, `rough sketch animation`, `lottie`;
 - Telegram-радар: `instagram`, `content plan`, `copywriting russian`, `medical marketing`, `clinic`, `social media`, `brand voice`, `airtable`, `make automation`.
 
+Если CLI отвечает «No skills found» на всё подряд, значит, skills.sh закрыт сетью этой среды (так бывает в задачах Cowork). Тогда ищите через WebFetch, он ходит в сеть другим путём:
+`https://skills.sh/api/search?q=<запрос>&limit=20` (вернёт JSON: source, skillId, installs).
+Сам скилл читайте клоном публичного репозитория (`git clone --depth 1 https://github.com/<owner>/<repo> <пустая папка>`) или через WebFetch на `https://raw.githubusercontent.com/<owner>/<repo>/HEAD/<путь>/SKILL.md`.
+
 Посмотреть состав репозитория со скиллами, ничего не ставя:
 ```bash
 NODE_USE_ENV_PROXY=1 DISABLE_TELEMETRY=1 npx -y skills@1.9.0 add <owner/repo> --list
@@ -71,7 +75,7 @@ Pull request сами не открывайте. Скрипты установл
 - Коммит в ветку `pr-os`: `library: <название>`, затем `git -c push.negotiate=true push origin pr-os`. Тест сохраняется всегда; если Азизе не понравится, она поставит оценку, и следующие запуски учтут это.
 - Если улучшили сам набор (новый хелпер в ease.js, полезный приём в шаблоне), это отдельный коммит `kit: ...` с объяснением в теле.
 
-Если push не прошёл, не повторяйте больше двух раз; напишите в отчёте, что тест лежит только в сессии.
+Если push не прошёл (403, «репозиторий не входит в разрешённые»), не повторяйте больше двух раз. Тогда отправьте через SendUserFile кроме mp4 ещё `scene.html` и `notes.md`, а для скилла его `SKILL.md` и строку для `skills-log.md`, и напишите в отчёте: «в репозиторий не записано, файлы приложены». Так ничего не теряется, и тест можно занести в библиотеку позже.
 
 ## 5. Учёт обратной связи
 
