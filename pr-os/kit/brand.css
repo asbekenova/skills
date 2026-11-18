@@ -1,0 +1,49 @@
+/* Визуальная система блога «Мама без паники» (утверждена в ноябре 2026).
+   Сверяйтесь с «claude/Техпаспорт PR_OS.md»: если там новее, правьте здесь. */
+
+@font-face { font-family: 'Montserrat'; font-weight: 800; src: url('node_modules/@fontsource/montserrat/files/montserrat-cyrillic-800-normal.woff2') format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Montserrat'; font-weight: 800; src: url('node_modules/@fontsource/montserrat/files/montserrat-latin-800-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Montserrat'; font-weight: 500; src: url('node_modules/@fontsource/montserrat/files/montserrat-cyrillic-500-normal.woff2') format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Montserrat'; font-weight: 500; src: url('node_modules/@fontsource/montserrat/files/montserrat-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Bad Script'; font-weight: 400; src: url('node_modules/@fontsource/bad-script/files/bad-script-cyrillic-400-normal.woff2') format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Bad Script'; font-weight: 400; src: url('node_modules/@fontsource/bad-script/files/bad-script-latin-400-normal.woff2') format('woff2'); }
+
+:root {
+  --sand: #EADFCB;   /* фон */
+  --navy: #1F2A44;   /* основной текст */
+  --amber: #C9861A;  /* единственный акцент */
+  --light: #F4EDE1;  /* светлые плашки, бумага */
+  /* Безопасная зона Reels 1080×1920: текст в y 230–1440, правые 230 px свободны */
+  --safe-top: 230px;
+  --safe-bottom: 1440px;
+  --safe-right: 230px;
+}
+
+html, body { margin: 0; padding: 0; background: var(--sand); }
+#stage {
+  position: relative; overflow: hidden;
+  width: 1080px; height: 1920px;
+  background: var(--sand); color: var(--navy);
+  font-family: 'Montserrat', sans-serif;
+}
+.h1 { font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; }
+.small { font-weight: 500; }
+.accent-script { font-family: 'Bad Script', cursive; color: var(--amber); }
+
+/* Бумажная фактура: одна на все ролики */
+.paper {
+  background-color: var(--light);
+  background-image:
+    radial-gradient(rgba(31,42,68,.05) 1px, transparent 1.2px),
+    radial-gradient(rgba(31,42,68,.035) 1px, transparent 1.2px);
+  background-size: 7px 7px, 11px 11px;
+  background-position: 0 0, 3px 5px;
+  box-shadow: 0 14px 30px rgba(31,42,68,.18), 0 2px 4px rgba(31,42,68,.12);
+}
+
+/* Отладка: включите ?guides=1, чтобы увидеть безопасную зону */
+.guides::after {
+  content: ''; position: absolute; left: 0; top: var(--safe-top);
+  width: calc(1080px - var(--safe-right)); height: calc(var(--safe-bottom) - var(--safe-top));
+  outline: 4px dashed rgba(255,0,0,.6); pointer-events: none;
+}
